@@ -1,1 +1,1 @@
-# Handlebars-Burger
+# Burger

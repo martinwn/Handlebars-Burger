@@ -1,0 +1,111 @@
+<main>
+    <h1>Have A Burger, Will Ya?</h1>
+    
+    <section id="not-devoured">
+
+      {{#each burgers}}
+        {{#unless this.devoured}}
+       
+          <div class="burger">
+            <h2>{{this.burger_name}}</h2>
+          </div>
+            <form>
+              <button type="submit" name="{{this.id}}" id="eat">Eat</button>
+            </form>
+          </div>
+
+        <hr>
+        {{/unless}}
+      {{/each}}
+
+    </section>  
+  
+
+    <section id="devoured">
+
+      <h1>Devoured</h1>
+
+      {{#each burgers}}
+        {{#if this.devoured}}
+          <div class="burger">
+            <h2>{{this.burger_name}}</h2>
+          </div>
+          <div>
+            <form>
+              <button type="submit" name="{{this.id}}" id="delete">Delete</button>
+            </form>
+          </div>
+        <hr>
+        {{/if}}
+      {{/each}}
+
+    </section>
+    
+    <section id="add-burger">
+
+      <h1>Add a Burger</h1>
+
+      <form>
+        <label for="bg"><h4>Burger Name:</h4></label>
+        <input type="text" id="bg" name="name" required>
+        <button type="submit" id="add">Add</button>
+      </form>
+
+    </section>
+
+  <script>
+    $(document).on("click", "#eat", function() {
+      
+      event.preventDefault();
+      
+      const id = $(this).attr("name");
+
+      $.ajax(`/api/burgers/${id}`, {
+        type: "PUT",
+      }).then(function() {
+          console.log("put this worked");
+          // Reload the page to get the updated list
+          location.reload();
+        }
+      );
+
+    });
+
+    $(document).on("click", "#delete", function() {
+      
+      event.preventDefault();
+      
+      const id = $(this).attr("name");
+
+      $.ajax(`/api/burgers/${id}`, {
+        type: "DELETE",
+      }).then(function() {
+          console.log("delete this worked");
+          // Reload the page to get the updated list
+          location.reload();
+        }
+      );
+
+    });
+
+    $(document).on("click", "#add", function() {
+      
+      event.preventDefault();
+
+      const newBurger = {
+        name: $("#bg").val().trim()
+      };
+
+      $.ajax(`/api/burgers`, {
+        type: "POST",
+        data: newBurger
+      }).then(function() {
+          console.log("post this worked");
+          // Reload the page to get the updated list
+          location.reload();
+        }
+      );
+
+    });
+  </script>
+</main>
